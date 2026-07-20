@@ -1,9 +1,11 @@
 {
     "geode": "5.0.0",
-    "id": "xanii.super_expert",
+    "id": "zenaisakovic61-spec.super_expert",
+    "version": "1.0.0",
     "name": "Super Expert",
-    "developer": "Xanii",
-    "version": "1.0.6",
-    "description": "Super Expert Run mode for Geometry Dash 2.2081",
-    "repository": "https://github.com"
+    "developer": "zenaisakovic61-spec",
+    "description": "Adds a challenging Super Expert mode to Geometry Dash with custom level pools and restrictions.",
+    "repository": "https://github.com/zenaisakovic61-spec/Super-expert",
+    "dependencies": [],
+    "settings": {}
 }
