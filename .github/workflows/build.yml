@@ -23,15 +23,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Geode CLI
-        uses: geode-sdk/cli/.github/actions/setup@main
-
-      - name: Manual SDK Installation and Build
+      - name: Download and Extract Geode SDK v5.0.0
         run: |
-          mkdir gd_folder
-          geode profile add --name compiler_profile gd_folder
-          geode profile select compiler_profile
-          geode sdk install v5.0.0
-          cmake -B build -T ClangCL -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/sdk"
+          curl -L https://github.com -o geode.tar.gz
+          tar -xzf geode.tar.gz
+          mv geode-5.0.0 geode-sdk-local
+
+      - name: Configure and Build Mod
+        run: |
+          cmake -B build -T ${{ matrix.config.os == 'windows-latest' && 'ClangCL' || '' }} -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/geode-sdk-local"
           cmake --build build --config Release
           
