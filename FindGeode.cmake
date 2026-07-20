@@ -1,0 +1,11 @@
+if(WIN32)
+    set(Geode_DIR "C:/Users/runneradmin/AppData/Local/Geode/sdk")
+    set(ENV{GEODE_SDK} "C:/Users/runneradmin/AppData/Local/Geode/sdk")
+else()
+    set(Geode_DIR "/home/runner/.local/share/Geode/sdk")
+    set(ENV{GEODE_SDK} "/home/runner/.local/share/Geode/sdk")
+endif()
+
+list(APPEND CMAKE_PREFIX_PATH "${Geode_DIR}")
+find_path(Geode_INCLUDE_DIR NAMES Geode.hpp PATHS "${Geode_DIR}/include")
+include("${Geode_DIR}/share/Geode/cmake/GeodeConfig.cmake" OPTIONAL)
