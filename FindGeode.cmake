@@ -7,5 +7,4 @@ else()
 endif()
 
 list(APPEND CMAKE_PREFIX_PATH "${Geode_DIR}")
-find_path(Geode_INCLUDE_DIR NAMES Geode.hpp PATHS "${Geode_DIR}/include")
-include("${Geode_DIR}/share/Geode/cmake/GeodeConfig.cmake" OPTIONAL)
+include("${Geode_DIR}/share/Geode/cmake/GeodeConfig.cmake")
