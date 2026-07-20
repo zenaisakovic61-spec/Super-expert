@@ -7,4 +7,9 @@ else()
 endif()
 
 list(APPEND CMAKE_PREFIX_PATH "${Geode_DIR}")
-include("${Geode_DIR}/share/Geode/cmake/GeodeConfig.cmake")
+
+if(EXISTS "${Geode_DIR}/cmake/GeodeConfig.cmake")
+    include("${Geode_DIR}/cmake/GeodeConfig.cmake")
+else()
+    include("${Geode_DIR}/share/Geode/cmake/GeodeConfig.cmake")
+endif()
