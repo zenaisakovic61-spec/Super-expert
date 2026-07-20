@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.24)
 
 project(SuperExpert VERSION 1.0.0 LANGUAGES CXX)
 
-if(WIN32)
-    set(GEODE_SDK_PATH "C:/Users/runneradmin/AppData/Local/Geode/sdk")
+if(DEFINED ENV{GEODE_SDK})
+    set(GEODE_SDK_PATH "$ENV{GEODE_SDK}")
+elseif(DEFINED GEODE_SDK)
+    set(GEODE_SDK_PATH "${GEODE_SDK}")
 else()
-    set(GEODE_SDK_PATH "/home/runner/.local/share/Geode/sdk")
+    set(GEODE_SDK_PATH "C:/Users/runneradmin/AppData/Local/Geode/sdk")
 endif()
 
 add_library(${PROJECT_NAME} SHARED src/main.cpp)
