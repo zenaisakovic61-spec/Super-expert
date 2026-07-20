@@ -14,8 +14,10 @@ jobs:
         config:
           - os: windows-latest
             platform: win
+            sdk_path: C:/Users/runneradmin/AppData/Local/Geode/sdk
           - os: ubuntu-latest
             platform: android
+            sdk_path: /home/runner/.local/share/Geode/sdk
 
     runs-on: ${{ matrix.config.os }}
 
@@ -28,4 +30,7 @@ jobs:
         with:
           platform: ${{ matrix.config.platform }}
           sdk: v5.8.2
+        env:
+          GEODE_SDK: ${{ matrix.config.sdk_path }}
+          Geode_DIR: ${{ matrix.config.sdk_path }}
           
