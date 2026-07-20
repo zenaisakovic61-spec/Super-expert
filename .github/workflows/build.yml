@@ -23,11 +23,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Download and Extract Geode SDK v5.0.0
-        run: |
-          curl -L https://github.com -o geode.tar.gz
-          tar -xzf geode.tar.gz
-          mv geode-5.0.0 geode-sdk-local
+      - name: Download Geode SDK Source
+        uses: actions/checkout@v4
+        with:
+          repository: geode-sdk/geode
+          ref: v5.0.0
+          path: geode-sdk-local
 
       - name: Configure and Build Mod
         run: |
