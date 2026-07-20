@@ -28,16 +28,7 @@ jobs:
 
       - name: Configure and Build Mod
         run: |
-          # Создаем пустую папку, имитирующую установленную игру
-          mkdir fake_gd
-          touch fake_gd/GeometryDash.exe
-          
-          # Настраиваем профиль и скачиваем SDK по новому синтаксису CLI v3.8.0
-          geode profile add --name GithubActions fake_gd
-          geode profile select GithubActions
           geode sdk install v5.8.2
-          
-          # Запускаем сборку
-          cmake -B build -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }}
+          cmake -B build -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/geode-sdk"
           cmake --build build --config Release
           
