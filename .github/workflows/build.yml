@@ -23,13 +23,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Geode CLI and SDK
-        uses: geode-sdk/cli/.github/actions/setup@main
+      - name: Download Geode SDK Manually
+        uses: actions/checkout@v4
+        with:
+          repository: geode-sdk/geode
+          ref: v5.0.0
+          path: external-geode-sdk
 
-      - name: Configure and Package Mod
+      - name: Configure and Build Mod
         run: |
-          geode config setup
-          geode sdk install v5.0.0
-          cmake -B build -T ${{ matrix.config.os == 'windows-latest' && 'ClangCL' || '' }} -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }}
+          cmake -B build -T ${{ matrix.config.os == 'windows-latest' && 'ClangCL' || '' }} -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/external-geode-sdk" -DGEODE_SDK="${{ github.workspace }}/external-geode-sdk"
           cmake --build build --config Release
           
