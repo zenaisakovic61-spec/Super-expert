@@ -2,20 +2,28 @@ cmake_minimum_required(VERSION 3.24)
 
 project(SuperExpert VERSION 1.0.0 LANGUAGES CXX)
 
-if(DEFINED ENV{GEODE_SDK})
-    set(GEODE_SDK_PATH "$ENV{GEODE_SDK}")
-elseif(DEFINED GEODE_SDK)
-    set(GEODE_SDK_PATH "${GEODE_SDK}")
+if(WIN32)
+    file(GLOB_RECURSE GEODE_CONFIG_FILES "C:/Users/runneradmin/*GeodeConfig.cmake")
 else()
-    set(GEODE_SDK_PATH "C:/Users/runneradmin/AppData/Local/Geode/sdk")
+    file(GLOB_RECURSE GEODE_CONFIG_FILES "/home/runner/*GeodeConfig.cmake")
 endif()
 
-add_library(${PROJECT_NAME} SHARED src/main.cpp)
-
-target_include_directories(${PROJECT_NAME} PRIVATE "${GEODE_SDK_PATH}/include")
-
-if(NOT DEFINED GEODE_MOD_ID)
-    set(GEODE_MOD_ID "zenaisakovic61-spec.super_expert")
+if(GEODE_CONFIG_FILES)
+    list(GET GEODE_CONFIG_FILES 0 FIRST_MATCH)
+    get_filename_component(GEODE_DIR_FOUND "${FIRST_MATCH}" DIRECTORY)
+    get_filename_component(GEODE_SDK_ROOT "${GEODE_DIR_FOUND}/../../.." ABSOLUTE)
+    set(Geode_DIR "${GEODE_DIR_FOUND}")
+    set(ENV{GEODE_SDK} "${GEODE_SDK_ROOT}")
 endif()
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE GEODE_MOD_ID="${GEODE_MOD_ID}")
+find_package(Geode REQUIRED)
+
+add_geode_mod(
+    ID "zenaisakovic61-spec.super_expert"
+    NAME "Super Expert"
+    DEVELOPER "zenaisakovic61-spec"
+    DESCRIPTION "Super Expert mod for Geometry Dash"
+    VERSION "1.0.0"
+)
+
+target_sources(${PROJECT_NAME} PRIVATE src/main.cpp)
