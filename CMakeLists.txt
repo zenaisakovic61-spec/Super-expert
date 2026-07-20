@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.24)
 
-set(GEODE_SDK_WINDOWS "C:/Users/runneradmin/AppData/Local/Geode/sdk")
-set(GEODE_SDK_LINUX "/home/runner/.local/share/Geode/sdk")
-if(WIN32)
-    set(Geode_DIR "${GEODE_SDK_WINDOWS}")
-    set(ENV{GEODE_SDK} "${GEODE_SDK_WINDOWS}")
-else()
-    set(Geode_DIR "${GEODE_SDK_LINUX}")
-    set(ENV{GEODE_SDK} "${GEODE_SDK_LINUX}")
-endif()
+project(SuperExpert VERSION 1.0.0 LANGUAGES CXX)
 
-project(SuperExpert)
+find_package(geode REQUIRED)
 
-find_package(Geode REQUIRED)
+add_geode_mod(
+    ID "yourname.super_expert"
+    NAME "Super Expert"
+    DEVELOPER "YourName"
+    DESCRIPTION "Super Expert mod for Geometry Dash"
+    VERSION "1.0.0"
+)
+
+target_sources(${PROJECT_NAME} PRIVATE src/main.cpp)
+
