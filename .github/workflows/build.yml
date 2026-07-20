@@ -32,6 +32,6 @@ jobs:
           geode profile add --name compiler_profile gd_folder
           geode profile select compiler_profile
           geode sdk install v5.0.0
-          cmake -B build -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/geode-sdk"
+          cmake -B build -T ClangCL -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/sdk"
           cmake --build build --config Release
           
