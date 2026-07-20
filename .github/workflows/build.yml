@@ -23,15 +23,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Geode CLI
-        uses: geode-sdk/cli/.github/actions/setup@main
+      - name: Download Geode SDK Source
+        uses: actions/checkout@v4
+        with:
+          repository: geode-sdk/geode
+          ref: v5.8.2
+          path: geode-sdk
 
       - name: Configure and Build Mod
         run: |
-          mkdir fake_gd
-          geode profile add --name target_profile fake_gd
-          geode profile select target_profile
-          geode sdk install v5.8.2
           cmake -B build -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/geode-sdk"
           cmake --build build --config Release
           
