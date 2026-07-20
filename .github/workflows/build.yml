@@ -32,6 +32,6 @@ jobs:
           geode profile add --name target_profile fake_gd
           geode profile select target_profile
           geode sdk install v5.8.2
-          cmake -B build -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }}
+          cmake -B build -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/geode-sdk"
           cmake --build build --config Release
           
