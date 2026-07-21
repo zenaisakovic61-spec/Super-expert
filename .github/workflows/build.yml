@@ -23,15 +23,25 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Download Geode SDK Manually
-        uses: actions/checkout@v4
-        with:
-          repository: geode-sdk/geode
-          ref: v5.0.0
-          path: external-geode-sdk
-
-      - name: Configure and Build Mod
+      - name: Download Prebuilt Geode SDK CLI Tools
         run: |
-          cmake -B build -T ${{ matrix.config.os == 'windows-latest' && 'ClangCL' || '' }} -A ${{ matrix.config.target == 'Win32' && 'Win32' || '' }} -DGeode_DIR="${{ github.workspace }}/external-geode-sdk" -DGEODE_SDK="${{ github.workspace }}/external-geode-sdk"
+          curl -L https://github.com -o cli-win.zip
+          curl -L https://github.com -o cli-linux.zip
+
+      - name: Configure and Build Mod Windows
+        if: matrix.config.os == 'windows-latest'
+        run: |
+          tar -xf cli-win.zip
+          ./geode.exe sdk install v5.0.0 --path local-sdk
+          cmake -B build -T ClangCL -A Win32 -DGeode_DIR="${{ github.workspace }}/local-sdk"
+          cmake --build build --config Release
+
+      - name: Configure and Build Mod Linux
+        if: matrix.config.os == 'ubuntu-latest'
+        run: |
+          tar -xf cli-linux.zip
+          chmod +x ./geode
+          ./geode sdk install v5.0.0 --path local-sdk
+          cmake -B build -DGeode_DIR="${{ github.workspace }}/local-sdk"
           cmake --build build --config Release
           
