@@ -13,9 +13,9 @@ jobs:
       matrix:
         config:
           - os: windows-latest
-            target: Win32
+            platform: win
           - os: ubuntu-latest
-            target: Android32
+            platform: android
 
     runs-on: ${{ matrix.config.os }}
 
@@ -23,25 +23,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Download Prebuilt Geode SDK CLI Tools
-        run: |
-          curl -L https://github.com -o cli-win.zip
-          curl -L https://github.com -o cli-linux.zip
-
-      - name: Configure and Build Mod Windows
-        if: matrix.config.os == 'windows-latest'
-        run: |
-          tar -xf cli-win.zip
-          ./geode.exe sdk install v5.0.0 --path local-sdk
-          cmake -B build -T ClangCL -A Win32 -DGeode_DIR="${{ github.workspace }}/local-sdk"
-          cmake --build build --config Release
-
-      - name: Configure and Build Mod Linux
-        if: matrix.config.os == 'ubuntu-latest'
-        run: |
-          tar -xf cli-linux.zip
-          chmod +x ./geode
-          ./geode sdk install v5.0.0 --path local-sdk
-          cmake -B build -DGeode_DIR="${{ github.workspace }}/local-sdk"
-          cmake --build build --config Release
+      - name: Build Mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          platform: ${{ matrix.config.platform }}
+          sdk: v5.0.0
           
